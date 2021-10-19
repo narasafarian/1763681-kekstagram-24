@@ -1,17 +1,17 @@
-// Списала частично этот код c MDN Web Docs - https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 function getRandomInt(min, max) {
   if (min === max) {
     return min;
   }
   if (max < min) {
-    return('Ошибка');
+    throw new Error('Ошибка');
   }
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 getRandomInt(1, 2);
 
-
-function commentLengthCheck(lineChecked, maxLength) {
+const DEFAULT_MAX_LENGTH = 140;
+function checkCommentLength(lineChecked, maxLength = DEFAULT_MAX_LENGTH) {
   return lineChecked.length <= maxLength;
 }
-commentLengthCheck('Hello, master!', 35);
+checkCommentLength('Hello, master!', 35);
+checkCommentLength('Hello, master!');
