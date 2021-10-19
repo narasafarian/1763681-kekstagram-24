@@ -1,4 +1,4 @@
-// Списала частично этот код отсюда-  https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+// Списала частично этот код c MDN Web Docs - https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 function getRandomInt(min, max) {
   if (min === max) {
     return min;
@@ -11,7 +11,7 @@ function getRandomInt(min, max) {
 getRandomInt(1, 2);
 
 
-function commentLengthCheck(lineCheked, maxLength) {
-  return lineCheked.length <= maxLength;
+function commentLengthCheck(lineChecked, maxLength) {
+  return lineChecked.length <= maxLength;
 }
 commentLengthCheck('Hello, master!', 35);
