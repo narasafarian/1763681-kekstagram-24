@@ -3,7 +3,7 @@ function getRandomInt(min, max) {
     return min;
   }
   if (max < min) {
-    throw new Error('Ошибка');
+    throw new Error('Введено некорректное число');
   }
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
