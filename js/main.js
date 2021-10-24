@@ -1,3 +1,12 @@
+const COMMENT_MIN = 1;
+const COMMENT_MAX = 5;
+const AVATAR_MIN = 1;
+const AVATAR_MAX = 6;
+const LIKES_MIN = 15;
+const LIKES_MAX = 200;
+const ID_MIN = 1;
+const ID_MAX = 25;
+
 function getRandomInt(min, max) {
   if (min === max) {
     return min;
@@ -72,9 +81,9 @@ const NAMES = [
   'Stannis',
 ];
 
-const createComment = (id) => ({
+const getComment = (id) => ({
   id: id,
-  avatar: `img/avatar-${  getRandomInt(1, 6) }.svg`,
+  avatar: `img/avatar-${  getRandomInt(AVATAR_MIN, AVATAR_MAX) }.svg`,
   message: MESSAGES[getRandomInt(0, MESSAGES.length - 1)],
   name: NAMES[getRandomInt(0, NAMES.length - 1)],
 });
@@ -82,26 +91,26 @@ const createComment = (id) => ({
 const getComments = (amount) => {
   const comments = [];
   for (let id = 1; id <= amount; id++) {
-    const comment = createComment(id);
+    const comment = getComment(id);
     comments.push(comment);
   }
   return comments;
 };
 
-const createPictureDescription = (id) => ({
+const getPictureDescription = (id) => ({
   id: id,
   url: `photos/${  id  }.jpg`,
   description: DESCRIPTIONS[getRandomInt(0, DESCRIPTIONS.length - 1)],
-  likes: getRandomInt(15, 200),
-  comments: getComments(getRandomInt(1, 5)),
+  likes: getRandomInt(LIKES_MIN, LIKES_MAX),
+  comments: getComments(getRandomInt(COMMENT_MIN, COMMENT_MAX)),
 });
 
 // eslint-disable-next-line no-unused-vars
-const generatePictureDescriptions = () => {
+const getPictureDescriptions = () => {
   const pictureDescriptions = [];
 
-  for (let id = 1; id <= 25; id++)  {
-    const pictureDescription = createPictureDescription(id);
+  for (let id = ID_MIN; id <= ID_MAX; id++)  {
+    const pictureDescription = getPictureDescription(id);
     pictureDescriptions.push(pictureDescription);
   }
   return pictureDescriptions;
