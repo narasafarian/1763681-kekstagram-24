@@ -1,3 +1,1 @@
-import {getPictureDescriptions} from './utils.js';
-
-getPictureDescriptions();
+import './thumbnails.js';
