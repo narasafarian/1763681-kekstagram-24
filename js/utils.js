@@ -56,11 +56,19 @@ const getPictureDescriptions = () => {
   return pictureDescriptions;
 };
 
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+function hasDuplicates(array) {
+  return (new Set(array)).size !== array.length;
+}
+
 export {
   getRandomInt,
   checkCommentLength,
   getComment,
   getComments,
   getPictureDescription,
-  getPictureDescriptions
+  getPictureDescriptions,
+  isEscapeKey,
+  hasDuplicates
 };
