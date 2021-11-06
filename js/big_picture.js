@@ -1,3 +1,5 @@
+import {isEscapeKey} from './utils.js';
+
 const bigPicture = document.querySelector('.big-picture');
 
 function getCommentsFragment(comments) {
@@ -42,7 +44,6 @@ function openBigPicture (photo) {
 
   const commentsLoader = bigPicture.querySelector('.comments-loader');
   commentsLoader.classList.add('hidden');
-
   document.body.classList.add('modal-open');
 }
 
@@ -52,12 +53,9 @@ document.addEventListener('keydown', onKeyDown);
 const bigPictureCancel = document.querySelector('.big-picture__cancel');
 bigPictureCancel.addEventListener('click', onCloseBigPicture);
 
-const isEscapeKey = (evt) => evt.key === 'Escape';
-
 function onKeyDown (evt) {
-  evt.preventDefault();
-
   if (isEscapeKey(evt)) {
+    evt.preventDefault();
     closeBigPicture();
   }
 }
