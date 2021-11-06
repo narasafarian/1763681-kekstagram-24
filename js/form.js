@@ -1,25 +1,36 @@
-import {checkCommentLength, isEscapeKey, hasDuplicates} from './utils.js';
-
+import {isEscapeKey, hasDuplicates} from './utils.js';
 
 const uploadPhoto = document.querySelector('#upload-file');
 const photoEditing = document.querySelector('.img-upload__overlay');
 const closePhotoEditing = document.querySelector('#upload-cancel');
+const textDescription = document.querySelector('.text__description');
+const DESCRIPTION_MAX_LENGTH = 140;
+const hashtagRegExp = /^#[A-Za-zA-Яа-яЁё0-9]{1,19}$/;
+const MAX_HASHTAGS_COUNT = 5;
+const imageUploadForm = document.querySelector('.img-upload__form');
 
-
-const openPhotoEditor = () => {
-  photoEditing.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-};
+textDescription.setAttribute('maxlength', DESCRIPTION_MAX_LENGTH);
 
 const closePhotoEditor = () => {
   uploadPhoto.value = '';
   photoEditing.classList.add('hidden');
   document.body.classList.remove('modal-open');
+  closePhotoEditing.removeEventListener('click', closePhotoEditor);
+  document.removeEventListener('keydown', onKeyDown);
+  textDescription.removeEventListener('keydown', onTextDescriptionKeyDown);
+  imageUploadForm.removeEventListener('submit', onUploadFormSubmit);
 };
-closePhotoEditing.addEventListener('click', closePhotoEditor);
-uploadPhoto.addEventListener('change', openPhotoEditor);
 
-document.addEventListener('keydown', onKeyDown);
+const openPhotoEditor = () => {
+  photoEditing.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  closePhotoEditing.addEventListener('click', closePhotoEditor);
+  document.addEventListener('keydown', onKeyDown);
+  textDescription.addEventListener('keydown', onTextDescriptionKeyDown);
+  imageUploadForm.addEventListener('submit', onUploadFormSubmit);
+};
+
+uploadPhoto.addEventListener('change', openPhotoEditor);
 
 function onKeyDown (evt) {
   if (isEscapeKey(evt)) {
@@ -35,12 +46,7 @@ textHashtags.addEventListener('keydown', (evt) => {
   }
 });
 
-const hashtagRegExp = /^#[A-Za-zA-Яа-яЁё0-9]{1,19}$/;
-const MAX_HASHTAGS_COUNT = 5;
-
-
-function validateHashtags () {
-  const hashtagsValue = textHashtags.value;
+function validateHashtags (hashtagsValue) {
   if (hashtagsValue.length === 0) {
     textHashtags.setCustomValidity('');
     textHashtags.reportValidity();
@@ -61,33 +67,21 @@ function validateHashtags () {
   textHashtags.reportValidity();
 }
 
-
-textHashtags.addEventListener('input', validateHashtags);
-
-const textDescription = document.querySelector('.text__description');
-const DESCRIPTION_MAX_LENGTH = 140;
-
-function validateTextDescription () {
-  if (!checkCommentLength(textDescription.value, DESCRIPTION_MAX_LENGTH)) {
-    textDescription.setCustomValidity(`Не больше ${DESCRIPTION_MAX_LENGTH} символов`);
-  } else {
-    textDescription.setCustomValidity('');
-  }
-  textDescription.reportValidity();
+function onHashtagsInput () {
+  const hashtagsValue = textHashtags.value;
+  validateHashtags(hashtagsValue);
 }
+textHashtags.addEventListener('input', onHashtagsInput);
 
-textDescription.addEventListener('input', validateTextDescription);
 
-
-textDescription.addEventListener('keydown', (evt) => {
+function onTextDescriptionKeyDown (evt) {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
-});
+}
 
-const imageUploadForm = document.querySelector('.img-upload__form');
-imageUploadForm.addEventListener('submit', (evt) => {
+function onUploadFormSubmit (evt) {
   if (!imageUploadForm.checkValidity()) {
     evt.preventDefault();
   }
-});
+}
