@@ -8,7 +8,6 @@ const uploadPhoto = document.querySelector('#upload-file');
 const photoEditing = document.querySelector('.img-upload__overlay');
 const closePhotoEditing = document.querySelector('#upload-cancel');
 const textDescription = document.querySelector('.text__description');
-const DESCRIPTION_MAX_LENGTH = 140;
 const hashtagRegExp = /^#[A-Za-zA-Яа-яЁё0-9]{1,19}$/;
 const MAX_HASHTAGS_COUNT = 5;
 const imageUploadForm = document.querySelector('.img-upload__form');
@@ -20,7 +19,6 @@ const scaleControlValue = document.querySelector('.scale__control--value');
 const imageUploadPreview = document.querySelector('.img-upload__preview');
 const imagePreview = imageUploadPreview.querySelector('img');
 const textHashtags = document.querySelector('.text__hashtags');
-
 const noneEffectElement = document.querySelector('#effect-none');
 const chromeEffectElement = document.querySelector('#effect-chrome');
 const sepiaEffectElement = document.querySelector('#effect-sepia');
@@ -85,10 +83,13 @@ const EFFECTS_SETTINGS = {
 
 let currentCheckedElement = noneEffectElement;
 
-textDescription.setAttribute('maxlength', DESCRIPTION_MAX_LENGTH);
-
 const closePhotoEditor = () => {
   resetUploadForm();
+  textHashtags.removeEventListener('keydown', onTexHashtagKeyDown);
+  textHashtags.removeEventListener('input', onHashtagsInput);
+  scaleControlSmaller.removeEventListener('click', onScaleControlSmallerClick);
+  scaleControlBigger.removeEventListener('click', onScaleControlBiggerClick);
+
   photoEditing.classList.add('hidden');
   document.body.classList.remove('modal-open');
   closePhotoEditing.removeEventListener('click', closePhotoEditor);
@@ -107,6 +108,11 @@ const closePhotoEditor = () => {
 };
 
 const openPhotoEditor = () => {
+  textHashtags.addEventListener('keydown', onTexHashtagKeyDown);
+  textHashtags.addEventListener('input', onHashtagsInput);
+  scaleControlSmaller.addEventListener('click', onScaleControlSmallerClick);
+  scaleControlBigger.addEventListener('click', onScaleControlBiggerClick);
+
   setImageScale(DEFAULT_SCALE_VALUE);
   photoEditing.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -152,20 +158,12 @@ function onUploadPhotoChange() {
   openPhotoEditor();
 }
 
-uploadPhoto.addEventListener('change', onUploadPhotoChange);
-
 function onKeyDown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closePhotoEditor();
   }
 }
-
-textHashtags.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-});
 
 function validateHashtags (hashtagsValue) {
   if (hashtagsValue.length === 0) {
@@ -192,7 +190,6 @@ function onHashtagsInput () {
   const hashtagsValue = textHashtags.value;
   validateHashtags(hashtagsValue);
 }
-textHashtags.addEventListener('input', onHashtagsInput);
 
 
 function onTextDescriptionKeyDown (evt) {
@@ -225,16 +222,6 @@ function onUploadFormSubmit (evt) {
       showErrorUploadMessage();
     });
 }
-
-scaleControlSmaller.addEventListener('click', () => {
-  const scale = parseInt(scaleControlValue.value, 10);
-  setImageScale(scale - SCALE_STEP);
-});
-
-scaleControlBigger.addEventListener('click', () => {
-  const scale = parseInt(scaleControlValue.value, 10);
-  setImageScale(scale + SCALE_STEP);
-});
 
 function changeEffect() {
   currentCheckedElement.removeAttribute('checked');
@@ -276,3 +263,21 @@ function onSliderUpdate(values, handle) {
   imageUploadPreview.style.filter = `${transformName}(${value}${unit})`;
   effectLevelValue.value = value;
 }
+
+function onTexHashtagKeyDown (evt) {
+  if (isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+}
+
+function onScaleControlBiggerClick() {
+  const scale = parseInt(scaleControlValue.value, 10);
+  setImageScale(scale + SCALE_STEP);
+}
+
+function onScaleControlSmallerClick() {
+  const scale = parseInt(scaleControlValue.value, 10);
+  setImageScale(scale - SCALE_STEP);
+}
+
+export {onUploadPhotoChange, uploadPhoto};

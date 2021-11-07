@@ -116,7 +116,7 @@
                 <!-- Добавление хэш-тегов и комментария к изображению -->
                 <fieldset class="img-upload__text text">
                   <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
-                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
+                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
                 </fieldset>
 
                 <!-- Кнопка для отправки данных на сервер -->
@@ -151,14 +151,6 @@
           <!-- Комментарии к изображению -->
           <div class="social__comment-count"><span class="comments-count-active">125</span> из <span class="comments-count">125</span> комментариев</div>
           <ul class="social__comments">
-            <!-- <li class="social__comment">
-              <img class="social__picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-              <p class="social__text">Мега фото! Просто обалдеть. Как вам так удалось?</p>
-            </li>
-            <li class="social__comment">
-              <img class="social__picture" src="img/avatar-3.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-               <p class="social__text">Да это фоташоп!!!!!!!!</p>
-            </li> -->
           </ul>
 
           <!-- Кнопка для загрузки новой порции комментариев -->
@@ -204,7 +196,7 @@
     </a>
   </template>
 
-  <!-- Сообщение с ошибкой первой загрузки изображениq -->
+  <!-- Сообщение с ошибкой первой загрузки изображений -->
   <template id="error-first-download-images">
     <section class="error">
       <div class="error__inner">
