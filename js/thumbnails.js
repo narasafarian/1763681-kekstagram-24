@@ -1,21 +1,14 @@
 import {openBigPicture} from './big_picture.js';
-import {getImagesFromServer} from './ajax.js';
-import {showErrorFirstDownloadMessage} from './alerts.js';
 
-getImagesFromServer()
-  .then((pictures) => createPictures(pictures))
-  .catch(() => {
-    showErrorFirstDownloadMessage();
-  });
+const userPictures = document.querySelector('.pictures');
+const thumbnailTemplate = document.querySelector('#picture').content;
+const pictureTemplate = thumbnailTemplate.querySelector('.picture');
 
 function createPictures(pictures) {
-  const thumbnailTemplate = document.querySelector('#picture').content;
-  const userPictures = document.querySelector('.pictures');
-
   const thumbnailFragment = document.createDocumentFragment();
 
   pictures.forEach((picture) => {
-    const pictureElement = thumbnailTemplate.cloneNode(true);
+    const pictureElement = pictureTemplate.cloneNode(true);
     const image = pictureElement.querySelector('.picture__img');
     image.src = picture.url;
     pictureElement.querySelector('.picture__likes').textContent = picture.likes;
@@ -28,3 +21,10 @@ function createPictures(pictures) {
   });
   userPictures.appendChild(thumbnailFragment);
 }
+
+function clearPictures() {
+  const pictures = userPictures.querySelectorAll('.picture');
+  pictures.forEach((pictureElement) => pictureElement.remove());
+}
+
+export {createPictures, clearPictures};

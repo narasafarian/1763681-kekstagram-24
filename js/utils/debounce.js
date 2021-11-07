@@ -6,7 +6,7 @@ function debounce (callback, timeoutDelay = 500) {
   // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
   let timeoutId;
 
-  return (...rest) => {
+  return function(...rest) {
     // Перед каждым новым вызовом удаляем предыдущий таймаут,
     // чтобы они не накапливались
     clearTimeout(timeoutId);
