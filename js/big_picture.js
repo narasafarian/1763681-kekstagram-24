@@ -1,5 +1,7 @@
 import {isEscapeKey} from './utils.js';
 
+const MAX_COMMENTS_SHOWED = 5;
+
 const bigPicture = document.querySelector('.big-picture');
 
 function getCommentsFragment(comments) {
@@ -18,6 +20,7 @@ function getCommentsFragment(comments) {
     textElement.classList.add('social__text');
     textElement.textContent = comment.message;
     commentElement.appendChild(textElement);
+    commentsFragment.appendChild(commentElement);
   });
 
   return commentsFragment;
@@ -31,19 +34,34 @@ function openBigPicture (photo) {
   bigPicture.querySelector('.likes-count').textContent = photo.likes;
   bigPicture.querySelector('.comments-count').textContent = photo.comments.length;
   bigPicture.querySelector('.social__caption').textContent = photo.description;
-
-
-  const commentsFragment = getCommentsFragment(photo.comments);
+  const activeCommentsCountElement = bigPicture.querySelector('.comments-count-active');
+  let currentIndex = 0;
+  let activeComments = photo.comments.slice(currentIndex, currentIndex + MAX_COMMENTS_SHOWED);
+  let commentsFragment = getCommentsFragment(activeComments);
+  currentIndex += activeComments.length;
+  activeCommentsCountElement.textContent = currentIndex;
 
   const socialCommentsElement = bigPicture.querySelector('.social__comments');
+  socialCommentsElement.textContent = '';
   socialCommentsElement.appendChild(commentsFragment);
 
-
-  const socialCommentCount = bigPicture.querySelector('.social__comment-count');
-  socialCommentCount.classList.add('hidden');
-
   const commentsLoader = bigPicture.querySelector('.comments-loader');
-  commentsLoader.classList.add('hidden');
+  if (photo.comments.length > MAX_COMMENTS_SHOWED) {
+    commentsLoader.classList.remove('hidden');
+    commentsLoader.onclick = () => {
+      activeComments = photo.comments.slice(currentIndex, currentIndex + MAX_COMMENTS_SHOWED);
+      commentsFragment = getCommentsFragment(activeComments);
+      currentIndex += activeComments.length;
+      activeCommentsCountElement.textContent = currentIndex;
+      socialCommentsElement.appendChild(commentsFragment);
+      if (photo.comments.length === currentIndex) {
+        commentsLoader.classList.add('hidden');
+      }
+    };
+  } else {
+    commentsLoader.classList.add('hidden');
+  }
+
   document.body.classList.add('modal-open');
 }
 

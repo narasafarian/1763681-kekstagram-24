@@ -1,7 +1,7 @@
 import {DESCRIPTIONS, MESSAGES, NAMES} from './consts.js';
 
-const COMMENT_MIN = 1;
-const COMMENT_MAX = 5;
+const COMMENT_MIN = 6;
+const COMMENT_MAX = 11;
 const AVATAR_MIN = 1;
 const AVATAR_MAX = 6;
 const LIKES_MIN = 15;
