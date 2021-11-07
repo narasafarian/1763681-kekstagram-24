@@ -1,5 +1,7 @@
 import {isEscapeKey, hasDuplicates} from './utils.js';
 import {setImageScale} from './photo_editor.js';
+import {submitImageToServer} from './ajax.js';
+import {showSuccessUploadMessage, showErrorUploadMessage} from './alerts.js';
 
 const uploadPhoto = document.querySelector('#upload-file');
 const photoEditing = document.querySelector('.img-upload__overlay');
@@ -15,6 +17,7 @@ const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const SCALE_STEP = 25;
 const scaleControlValue = document.querySelector('.scale__control--value');
 const imageUploadPreview = document.querySelector('.img-upload__preview');
+const textHashtags = document.querySelector('.text__hashtags');
 
 const noneEffectElement = document.querySelector('#effect-none');
 const chromeEffectElement = document.querySelector('#effect-chrome');
@@ -83,7 +86,7 @@ let currentCheckedElement = noneEffectElement;
 textDescription.setAttribute('maxlength', DESCRIPTION_MAX_LENGTH);
 
 const closePhotoEditor = () => {
-  uploadPhoto.value = '';
+  resetUploadForm();
   photoEditing.classList.add('hidden');
   document.body.classList.remove('modal-open');
   closePhotoEditing.removeEventListener('click', closePhotoEditor);
@@ -127,7 +130,6 @@ const openPhotoEditor = () => {
   phobosEffectElement.addEventListener('click', changeEffect);
   heatEffectElement.addEventListener('click', changeEffect);
 
-  setImageScale(DEFAULT_SCALE_VALUE);
   noneEffectElement.click();
 };
 
@@ -140,7 +142,6 @@ function onKeyDown (evt) {
   }
 }
 
-const textHashtags = document.querySelector('.text__hashtags');
 textHashtags.addEventListener('keydown', (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
@@ -181,10 +182,29 @@ function onTextDescriptionKeyDown (evt) {
   }
 }
 
+function resetUploadForm() {
+  uploadPhoto.value = '';
+  textHashtags.value = '';
+  textDescription.value = '';
+  setImageScale(DEFAULT_SCALE_VALUE);
+  noneEffectElement.click();
+}
+
 function onUploadFormSubmit (evt) {
+  evt.preventDefault();
   if (!imageUploadForm.checkValidity()) {
-    evt.preventDefault();
+    return;
   }
+
+  const formData = new FormData(imageUploadForm);
+  submitImageToServer(formData)
+    .then(() => {
+      closePhotoEditor();
+      showSuccessUploadMessage();
+    })
+    .catch(() => {
+      showErrorUploadMessage();
+    });
 }
 
 scaleControlSmaller.addEventListener('click', () => {
@@ -235,4 +255,5 @@ function onSliderUpdate(values, handle) {
   const value = values[handle];
   const {transformName, unit = ''} = EFFECTS_SETTINGS[name];
   imageUploadPreview.style.filter = `${transformName}(${value}${unit})`;
+  effectLevelValue.value = value;
 }
