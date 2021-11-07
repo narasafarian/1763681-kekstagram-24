@@ -3,6 +3,7 @@ import {setImageScale} from './photo_editor.js';
 import {submitImageToServer} from './ajax.js';
 import {showSuccessUploadMessage, showErrorUploadMessage} from './alerts.js';
 
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const uploadPhoto = document.querySelector('#upload-file');
 const photoEditing = document.querySelector('.img-upload__overlay');
 const closePhotoEditing = document.querySelector('#upload-cancel');
@@ -17,6 +18,7 @@ const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const SCALE_STEP = 25;
 const scaleControlValue = document.querySelector('.scale__control--value');
 const imageUploadPreview = document.querySelector('.img-upload__preview');
+const imagePreview = imageUploadPreview.querySelector('img');
 const textHashtags = document.querySelector('.text__hashtags');
 
 const noneEffectElement = document.querySelector('#effect-none');
@@ -105,6 +107,7 @@ const closePhotoEditor = () => {
 };
 
 const openPhotoEditor = () => {
+  setImageScale(DEFAULT_SCALE_VALUE);
   photoEditing.classList.remove('hidden');
   document.body.classList.add('modal-open');
   closePhotoEditing.addEventListener('click', closePhotoEditor);
@@ -133,7 +136,23 @@ const openPhotoEditor = () => {
   noneEffectElement.click();
 };
 
-uploadPhoto.addEventListener('change', openPhotoEditor);
+function setPreviewImage() {
+  const file = uploadPhoto.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    imagePreview.src = URL.createObjectURL(file);
+  }
+}
+
+function onUploadPhotoChange() {
+  setPreviewImage();
+  openPhotoEditor();
+}
+
+uploadPhoto.addEventListener('change', onUploadPhotoChange);
 
 function onKeyDown (evt) {
   if (isEscapeKey(evt)) {
