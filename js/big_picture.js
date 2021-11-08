@@ -26,7 +26,7 @@ function getCommentsFragment(comments) {
   return commentsFragment;
 }
 
-function openBigPicture (photo) {
+function openBigPicture(photo) {
   document.addEventListener('keydown', onKeyDown);
   bigPictureCancel.addEventListener('click', onCloseBigPicture);
 
@@ -68,7 +68,7 @@ function openBigPicture (photo) {
   document.body.classList.add('modal-open');
 }
 
-function onKeyDown (evt) {
+function onKeyDown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeBigPicture();
@@ -80,7 +80,7 @@ function closeBigPicture() {
   document.body.classList.remove('modal-open');
 }
 
-function onCloseBigPicture (evt) {
+function onCloseBigPicture(evt) {
   evt.preventDefault();
   closeBigPicture();
   document.removeEventListener('keydown', onKeyDown);

@@ -18,7 +18,7 @@ const showErrorUploadMessage = () => {
 
   document.body.appendChild(errorElement);
 
-  function onKeyDown (evt) {
+  function onKeyDown(evt) {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       errorElement.remove();
@@ -56,7 +56,7 @@ const showSuccessUploadMessage = () => {
 
   document.body.appendChild(successElement);
 
-  function onKeyDown (evt) {
+  function onKeyDown(evt) {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       successElement.remove();

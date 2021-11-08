@@ -158,14 +158,14 @@ function onUploadPhotoChange() {
   openPhotoEditor();
 }
 
-function onKeyDown (evt) {
+function onKeyDown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closePhotoEditor();
   }
 }
 
-function validateHashtags (hashtagsValue) {
+function validateHashtags(hashtagsValue) {
   if (hashtagsValue.length === 0) {
     textHashtags.setCustomValidity('');
     textHashtags.reportValidity();
@@ -186,13 +186,13 @@ function validateHashtags (hashtagsValue) {
   textHashtags.reportValidity();
 }
 
-function onHashtagsInput () {
+function onHashtagsInput() {
   const hashtagsValue = textHashtags.value;
   validateHashtags(hashtagsValue);
 }
 
 
-function onTextDescriptionKeyDown (evt) {
+function onTextDescriptionKeyDown(evt) {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
@@ -206,7 +206,7 @@ function resetUploadForm() {
   noneEffectElement.click();
 }
 
-function onUploadFormSubmit (evt) {
+function onUploadFormSubmit(evt) {
   evt.preventDefault();
   if (!imageUploadForm.checkValidity()) {
     return;
@@ -264,7 +264,7 @@ function onSliderUpdate(values, handle) {
   effectLevelValue.value = value;
 }
 
-function onTexHashtagKeyDown (evt) {
+function onTexHashtagKeyDown(evt) {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
