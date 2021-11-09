@@ -7,37 +7,49 @@ const errorTemplateSection = errorTemplate.querySelector('section');
 const errorFirstDownloadTemplate = document.querySelector('#error-first-download-images').content;
 const errorFirstDownloadTemplateSection = errorFirstDownloadTemplate.querySelector('section');
 
+const onKeyDown = (evt, element) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    element.remove();
+  }
+};
+
+const onClickButton = (element) => {
+  element.remove();
+};
+
+const onOutsideClick = (evt, elementInner, element) => {
+  if (elementInner.contains(evt.target)) {
+    return;
+  }
+  element.remove();
+};
+
 const showErrorUploadMessage = () => {
   const errorElement = errorTemplateSection.cloneNode(true);
   const button = errorElement.querySelector('button');
   const errorInner = errorElement.querySelector('.error__inner');
 
-  document.addEventListener('keydown', onKeyDown);
-  button.addEventListener('click', onClickButton);
-  document.addEventListener('click', onOutsideClick);
+  const onKeyDownDocument = (evt) => {
+    onKeyDown(evt, errorElement);
+    document.removeEventListener('keydown', onKeyDownDocument);
+  };
+
+  const onAlertClickButton = () => {
+    onClickButton(errorElement);
+    button.removeEventListener('click', onAlertClickButton);
+  };
+
+  const onOutsideAlertClick = (evt) => {
+    onOutsideClick(evt, errorInner, errorElement);
+    document.removeEventListener('click', onOutsideAlertClick);
+  };
+
+  document.addEventListener('keydown', onKeyDownDocument);
+  button.addEventListener('click', onAlertClickButton);
+  document.addEventListener('click', onOutsideAlertClick);
 
   document.body.appendChild(errorElement);
-
-  function onKeyDown(evt) {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      errorElement.remove();
-      document.addEventListener('keydown', onKeyDown);
-    }
-  }
-
-  function onClickButton() {
-    errorElement.remove();
-    button.removeEventListener('click', onClickButton);
-  }
-
-  function onOutsideClick(evt) {
-    if (errorInner.contains(evt.target)) {
-      return;
-    }
-    errorElement.remove();
-    document.removeEventListener('click', onOutsideClick);
-  }
 };
 
 const showErrorFirstDownloadMessage = () => {
@@ -50,32 +62,26 @@ const showSuccessUploadMessage = () => {
   const button = successElement.querySelector('button');
   const successInner = successElement.querySelector('.success__inner');
 
-  document.addEventListener('keydown', onKeyDown);
-  button.addEventListener('click', onClickButton);
-  document.addEventListener('click', onOutsideClick);
+  const onKeyDownDocument = (evt) => {
+    onKeyDown(evt, successElement);
+    document.removeEventListener('keydown', onKeyDownDocument);
+  };
+
+  const onAlertClickButton = () => {
+    onClickButton(successElement);
+    button.removeEventListener('click', onAlertClickButton);
+  };
+
+  const onOutsideAlertClick = (evt) => {
+    onOutsideClick(evt, successInner, successElement);
+    document.removeEventListener('click', onOutsideAlertClick);
+  };
+
+  document.addEventListener('keydown', onKeyDownDocument);
+  button.addEventListener('click', onAlertClickButton);
+  document.addEventListener('click', onOutsideAlertClick);
 
   document.body.appendChild(successElement);
-
-  function onKeyDown(evt) {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      successElement.remove();
-      document.addEventListener('keydown', onKeyDown);
-    }
-  }
-
-  function onClickButton() {
-    successElement.remove();
-    button.removeEventListener('click', onClickButton);
-  }
-
-  function onOutsideClick(evt) {
-    if (successInner.contains(evt.target)) {
-      return;
-    }
-    successElement.remove();
-    document.removeEventListener('click', onOutsideClick);
-  }
 };
 
 export {showSuccessUploadMessage, showErrorUploadMessage, showErrorFirstDownloadMessage};

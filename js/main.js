@@ -4,7 +4,7 @@ import {getImagesFromServer} from './ajax.js';
 import {showFilters, addFilterHandlers, getRandomPictures} from './filters.js';
 import {showErrorFirstDownloadMessage} from './alerts.js';
 
-function init() {
+const init = () => {
   uploadPhoto.addEventListener('change', onUploadPhotoChange);
 
   let pictures = [];
@@ -43,6 +43,6 @@ function init() {
     .catch(() => {
       showErrorFirstDownloadMessage();
     });
-}
+};
 
 init();

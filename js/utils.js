@@ -10,9 +10,7 @@ const getRandomInt = (min, max) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-function hasDuplicates(array) {
-  return (new Set(array)).size !== array.length;
-}
+const hasDuplicates = (array) => (new Set(array)).size !== array.length;
 
 export {
   getRandomInt,

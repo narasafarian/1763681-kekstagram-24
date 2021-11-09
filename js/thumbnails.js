@@ -4,7 +4,7 @@ const userPictures = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture').content;
 const pictureTemplate = thumbnailTemplate.querySelector('.picture');
 
-function createPictures(pictures) {
+const createPictures = (pictures) => {
   const thumbnailFragment = document.createDocumentFragment();
 
   pictures.forEach((picture) => {
@@ -20,11 +20,11 @@ function createPictures(pictures) {
     });
   });
   userPictures.appendChild(thumbnailFragment);
-}
+};
 
-function clearPictures() {
+const clearPictures = () => {
   const pictures = userPictures.querySelectorAll('.picture');
   pictures.forEach((pictureElement) => pictureElement.remove());
-}
+};
 
 export {createPictures, clearPictures};
