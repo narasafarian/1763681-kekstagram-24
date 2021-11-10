@@ -15,17 +15,17 @@ const init = () => {
   };
 
   const onRandomClick = () => {
-    const arr = [...pictures];
-    const randomPictures = getRandomPictures(arr);
+    const copiesOfPictures = [...pictures];
+    const randomPictures = getRandomPictures(copiesOfPictures);
     clearPictures();
     createPictures(randomPictures);
   };
 
   const onDiscussedClick = () => {
-    const arr = [...pictures];
-    arr.sort(((a, b) => b.comments.length - a.comments.length));
+    const discussedPictures = [...pictures];
+    discussedPictures.sort(((a, b) => b.comments.length - a.comments.length));
     clearPictures();
-    createPictures(arr);
+    createPictures(discussedPictures);
   };
 
   addFilterHandlers({

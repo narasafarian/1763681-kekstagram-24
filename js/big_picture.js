@@ -1,6 +1,8 @@
 import {isEscapeKey} from './utils.js';
 
 const MAX_COMMENTS_SHOWED = 5;
+const IMAGE_WIDTH = '35';
+const IMAGE_HEIGHT = '35';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureCancel = document.querySelector('.big-picture__cancel');
@@ -14,8 +16,8 @@ const getCommentsFragment = (comments) => {
     imageElement.classList.add('social__picture');
     imageElement.setAttribute('src', comment.avatar);
     imageElement.setAttribute('alt', comment.name);
-    imageElement.setAttribute('width', '35');
-    imageElement.setAttribute('height', '35');
+    imageElement.setAttribute('width', IMAGE_WIDTH);
+    imageElement.setAttribute('height', IMAGE_HEIGHT);
     commentElement.appendChild(imageElement);
     const textElement = document.createElement('p');
     textElement.classList.add('social__text');

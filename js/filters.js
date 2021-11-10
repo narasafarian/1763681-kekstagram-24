@@ -42,14 +42,14 @@ const addFilterHandlers = ({
   filterDiscussed.addEventListener('click', onChangeActiveFilterDebounced);
 };
 
-const getRandomPictures = (pictures) => {
-  const result = [];
-  while (result.length !== MAX_RANDOM_PICTURES && pictures.length) {
-    const removed = pictures.splice(getRandomInt(0, pictures.length - 1) ,1);
-    result.push(removed[0]);
+const getRandomPictures = (originalPictures) => {
+  const pictures = [];
+  while (pictures.length !== MAX_RANDOM_PICTURES && originalPictures.length) {
+    const removed = originalPictures.splice(getRandomInt(0, originalPictures.length - 1) ,1);
+    pictures.push(removed[0]);
   }
 
-  return result;
+  return pictures;
 };
 
 export {showFilters, addFilterHandlers, getRandomPictures};
