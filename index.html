@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="nouislider/nouislider.css">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -115,7 +116,7 @@
                 <!-- Добавление хэш-тегов и комментария к изображению -->
                 <fieldset class="img-upload__text text">
                   <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
-                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
+                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
                 </fieldset>
 
                 <!-- Кнопка для отправки данных на сервер -->
@@ -127,7 +128,6 @@
       </section>
 
       <!-- Здесь будут изображения других пользователей -->
-
     </section>
 
     <!-- Полноэкранный показ изображения -->
@@ -149,16 +149,8 @@
           </div>
 
           <!-- Комментарии к изображению -->
-          <div class="social__comment-count">5 из <span class="comments-count">125</span> комментариев</div>
+          <div class="social__comment-count"><span class="comments-count-active">125</span> из <span class="comments-count">125</span> комментариев</div>
           <ul class="social__comments">
-            <li class="social__comment">
-              <img class="social__picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-              <p class="social__text">Мега фото! Просто обалдеть. Как вам так удалось?</p>
-            </li>
-            <li class="social__comment">
-              <img class="social__picture" src="img/avatar-3.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-               <p class="social__text">Да это фоташоп!!!!!!!!</p>
-            </li>
           </ul>
 
           <!-- Кнопка для загрузки новой порции комментариев -->
@@ -204,6 +196,16 @@
     </a>
   </template>
 
+  <!-- Сообщение с ошибкой первой загрузки изображений -->
+  <template id="error-first-download-images">
+    <section class="error">
+      <div class="error__inner">
+        <h2 class="error__title">Ошибка загрузки изображений</h2>
+        <h3 class="error__description">Поробуйте перезагрузить страницу</h2>
+      </div>
+    </section>
+  </template>
+
   <!-- Сообщение с ошибкой загрузки изображения -->
   <template id="error">
     <section class="error">
@@ -228,6 +230,7 @@
   <template id="messages">
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
+  <script src="nouislider/nouislider.js"></script>
   <script type="module" src="./js/main.js"></script>
 </body>
 </html>

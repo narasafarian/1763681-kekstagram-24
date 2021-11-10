@@ -1,8 +1,11 @@
 import {isEscapeKey} from './utils.js';
 
-const bigPicture = document.querySelector('.big-picture');
+const MAX_COMMENTS_SHOWED = 5;
 
-function getCommentsFragment(comments) {
+const bigPicture = document.querySelector('.big-picture');
+const bigPictureCancel = document.querySelector('.big-picture__cancel');
+
+const getCommentsFragment = (comments) => {
   const commentsFragment = document.createDocumentFragment();
   comments.forEach((comment) => {
     const commentElement = document.createElement('li');
@@ -18,56 +21,83 @@ function getCommentsFragment(comments) {
     textElement.classList.add('social__text');
     textElement.textContent = comment.message;
     commentElement.appendChild(textElement);
+    commentsFragment.appendChild(commentElement);
   });
 
   return commentsFragment;
-}
+};
 
-function openBigPicture (photo) {
+const closeBigPicture = () => {
+  bigPicture.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+const onKeyDown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeBigPicture();
+  }
+};
+
+const onCloseBigPicture = (evt) => {
+  evt.preventDefault();
+  closeBigPicture();
+};
+
+const openBigPicture = (photo) => {
   bigPicture.classList.remove('hidden');
-
 
   bigPicture.querySelector('.big-picture__img img').src = photo.url;
   bigPicture.querySelector('.likes-count').textContent = photo.likes;
   bigPicture.querySelector('.comments-count').textContent = photo.comments.length;
   bigPicture.querySelector('.social__caption').textContent = photo.description;
 
-
-  const commentsFragment = getCommentsFragment(photo.comments);
+  const activeCommentsCountElement = bigPicture.querySelector('.comments-count-active');
+  let currentIndex = 0;
+  let activeComments = photo.comments.slice(currentIndex, currentIndex + MAX_COMMENTS_SHOWED);
+  let commentsFragment = getCommentsFragment(activeComments);
+  currentIndex += activeComments.length;
+  activeCommentsCountElement.textContent = currentIndex;
 
   const socialCommentsElement = bigPicture.querySelector('.social__comments');
+  socialCommentsElement.textContent = '';
   socialCommentsElement.appendChild(commentsFragment);
 
-
-  const socialCommentCount = bigPicture.querySelector('.social__comment-count');
-  socialCommentCount.classList.add('hidden');
-
   const commentsLoader = bigPicture.querySelector('.comments-loader');
-  commentsLoader.classList.add('hidden');
-  document.body.classList.add('modal-open');
-}
 
-document.addEventListener('keydown', onKeyDown);
+  const onClickCommentsLoader = () => {
+    activeComments = photo.comments.slice(currentIndex, currentIndex + MAX_COMMENTS_SHOWED);
+    commentsFragment = getCommentsFragment(activeComments);
+    currentIndex += activeComments.length;
+    activeCommentsCountElement.textContent = currentIndex;
+    socialCommentsElement.appendChild(commentsFragment);
+    if (photo.comments.length === currentIndex) {
+      commentsLoader.classList.add('hidden');
+    }
+  };
 
+  const onCloseBigPictureWrapper = (evt) => {
+    onCloseBigPicture(evt);
+    bigPictureCancel.removeEventListener('click', onCloseBigPicture);
+    commentsLoader.removeEventListener('click', onClickCommentsLoader);
+  };
+  bigPictureCancel.addEventListener('click', onCloseBigPictureWrapper);
 
-const bigPictureCancel = document.querySelector('.big-picture__cancel');
-bigPictureCancel.addEventListener('click', onCloseBigPicture);
+  const onKeyDownWrapper = (evt) => {
+    onKeyDown(evt);
+    document.removeEventListener('keydown', onKeyDownWrapper);
+    commentsLoader.removeEventListener('click', onClickCommentsLoader);
+  };
+  document.addEventListener('keydown', onKeyDownWrapper);
 
-function onKeyDown (evt) {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeBigPicture();
+  if (photo.comments.length > MAX_COMMENTS_SHOWED) {
+    commentsLoader.classList.remove('hidden');
+    commentsLoader.addEventListener('click', onClickCommentsLoader);
+  } else {
+    commentsLoader.classList.add('hidden');
   }
-}
 
-function closeBigPicture() {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-}
-
-function onCloseBigPicture (evt) {
-  evt.preventDefault();
-  closeBigPicture();
-}
+  document.body.classList.add('modal-open');
+};
 
 export {openBigPicture};
